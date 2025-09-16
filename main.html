@@ -4,75 +4,71 @@
   <meta charset="UTF-8">
   <title>Grofers Checkout</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
     table {
       border-collapse: collapse;
-      width: 50%;
-      margin: 20px;
+      width: 300px;
+      margin-bottom: 20px;
     }
+
     th, td {
-      border: 1px solid #333;
+      border: 1px solid #ddd;
       padding: 8px;
-      text-align: left;
+      text-align: center;
     }
-    .total-row {
-      font-weight: bold;
+
+    .price {
       background-color: #f0f0f0;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #ans {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: green;
     }
   </style>
 </head>
 <body>
 
-  <h2>Grocery List</h2>
+  <h2>Grocery Price List</h2>
 
-  <table id="groceryTable">
-    <tr>
-      <th>Item</th>
-      <th>Price</th>
-    </tr>
-    <tr class="item">
-      <td>Apples</td>
-      <td class="prices">50</td>
-    </tr>
-    <tr class="item">
-      <td>Milk</td>
-      <td class="prices">30</td>
-    </tr>
-    <tr class="item">
-      <td>Rice</td>
-      <td class="prices">100</td>
-    </tr>
+  <table id="grocery">
+    <tr class="item"><td class="price" contenteditable="true">0</td></tr>
+    <tr class="item"><td class="price" contenteditable="true">0</td></tr>
+    <tr class="item"><td class="price" contenteditable="true">0</td></tr>
+    <tr class="item"><td class="price" contenteditable="true">0</td></tr>
+    <tr class="item"><td class="price" contenteditable="true">0</td></tr>
   </table>
 
   <button onclick="calculateTotal()">Calculate Total</button>
 
+  <div id="ans"></div>
+
   <script>
     function calculateTotal() {
-      const priceElements = document.querySelectorAll(".prices");
+      const prices = document.querySelectorAll(".price");
       let total = 0;
 
-      priceElements.forEach(priceEl => {
-        total += parseFloat(priceEl.textContent);
+      prices.forEach(price => {
+        // Read the contenteditable text
+        const val = parseFloat(price.innerText.trim());
+        if (!isNaN(val)) {
+          total += val;
+        }
       });
 
-      const table = document.getElementById("groceryTable");
-
-      // Remove existing total row if any
-      const existingTotalRow = document.getElementById("totalRow");
-      if (existingTotalRow) {
-        table.removeChild(existingTotalRow);
-      }
-
-      // Create a new row
-      const totalRow = document.createElement("tr");
-      totalRow.id = "totalRow";
-      totalRow.className = "total-row";
-
-      const totalCell = document.createElement("td");
-      totalCell.colSpan = 2;
-      totalCell.textContent = `Total Price: ₹${total}`;
-
-      totalRow.appendChild(totalCell);
-      table.appendChild(totalRow);
+      document.getElementById("ans").textContent = total;
     }
   </script>
 
